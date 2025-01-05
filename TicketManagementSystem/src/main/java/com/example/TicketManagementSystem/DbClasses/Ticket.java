@@ -1,9 +1,6 @@
 package com.example.TicketManagementSystem.DbClasses;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,11 +10,15 @@ public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    int ticketId;
-    private String userName;
-    private LocalDateTime dateOfShow;
-    private List<Integer> Seats;
+    private int ticketId;
+
+    @OneToOne(mappedBy = "ticket", fetch = FetchType.EAGER)
+    private TicketDetails ticketDetails;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bookingId", referencedColumnName = "bookingId", nullable = false)
+    private Booking booking;
+
 
     public int getTicketId() {
         return ticketId;
@@ -27,27 +28,19 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public String getUserName() {
-        return userName;
+    public TicketDetails getTicketDetails() {
+        return ticketDetails;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setTicketDetails(TicketDetails ticketDetails) {
+        this.ticketDetails = ticketDetails;
     }
 
-    public LocalDateTime getDateOfShow() {
-        return dateOfShow;
+    public Booking getBooking() {
+        return booking;
     }
 
-    public void setDateOfShow(LocalDateTime dateOfShow) {
-        this.dateOfShow = dateOfShow;
-    }
-
-    public List<Integer> getSeats() {
-        return Seats;
-    }
-
-    public void setSeats(List<Integer> seats) {
-        Seats = seats;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 }
